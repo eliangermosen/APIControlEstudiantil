@@ -31,7 +31,7 @@ namespace APIControlEstudiantil.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Estudiante>> GetEstudiante(int id)
         {
-            var estudiante = await _context.Estudiantes.FindAsync(id);
+            var estudiante = await _context.Estudiantes.Include(c=>c.Calificacions).FirstOrDefaultAsync(e=>e.Id==id);
 
             if (estudiante == null)
             {

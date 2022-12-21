@@ -10,7 +10,9 @@ builder.Services.AddCors(options =>
     options.AddPolicy(name: cors,
                       policy =>
                       {
-                          policy.WithOrigins("http://localhost:4200/");
+                          policy.WithOrigins("http://localhost:4200")
+                                            .AllowAnyHeader()
+                                            .AllowAnyMethod();
                       });
 });
 
@@ -25,6 +27,8 @@ builder.Services.AddDbContext<ControlEstudiantilContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("ControlEstudiantilContext"));
 });
+
+builder.Services.AddControllersWithViews().AddNewtonsoftJson(options=>options.SerializerSettings.ReferenceLoopHandling=Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
 var app = builder.Build();
 

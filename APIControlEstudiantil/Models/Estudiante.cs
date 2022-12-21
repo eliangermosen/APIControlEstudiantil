@@ -8,17 +8,18 @@ namespace APIControlEstudiantil.Models
         public Estudiante()
         {
             Asistencia = new HashSet<Asistencium>();
+            Calificacions = new HashSet<Calificacion>();
         }
 
         public int Id { get; set; }
-        public string Matricula { get; set; } = null!;
-        public string Nombre { get; set; } = null!;
-        public string Apellido { get; set; } = null!;
-        public string Cedula { get; set; } = null!;
-        public string Telefono { get; set; } = null!;
-        public string Correo { get; set; } = null!;
+        public string? Matricula { get; set; }
+        public string? Nombre { get; set; }
+        public string? Apellido { get; set; }
+        public string? Cedula { get; set; }
+        public string? Telefono { get; set; }
+        public string? Correo { get; set; }
 
-        public virtual Calificacion Calificacion { get; set; } = null!;
         public virtual ICollection<Asistencium> Asistencia { get; set; }
+        public virtual ICollection<Calificacion> Calificacions { get; set; }
     }
 }

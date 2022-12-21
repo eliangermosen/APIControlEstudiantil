@@ -20,6 +20,15 @@ namespace APIControlEstudiantil.Models
         public virtual DbSet<Calificacion> Calificacions { get; set; } = null!;
         public virtual DbSet<Estudiante> Estudiantes { get; set; } = null!;
 
+//        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+//        {
+//            if (!optionsBuilder.IsConfigured)
+//            {
+//#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+//                optionsBuilder.UseSqlServer("Server=MSI\\SQLEXPRESS; Database=ControlEstudiantil; Trusted_Connection=True;");
+//            }
+//        }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Asistencium>(entity =>
@@ -33,39 +42,22 @@ namespace APIControlEstudiantil.Models
                 entity.HasOne(d => d.Estudiante)
                     .WithMany(p => p.Asistencia)
                     .HasForeignKey(d => d.EstudianteId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Asistenci__Estud__403A8C7D");
+                    .HasConstraintName("FK__Asistenci__Estud__5441852A");
             });
 
             modelBuilder.Entity<Calificacion>(entity =>
             {
                 entity.ToTable("Calificacion");
 
-                entity.HasIndex(e => e.EstudianteId, "UQ__Califica__6F7682D95D299F81")
-                    .IsUnique();
-
                 entity.HasOne(d => d.Estudiante)
-                    .WithOne(p => p.Calificacion)
-                    .HasForeignKey<Calificacion>(d => d.EstudianteId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Calificac__Estud__3D5E1FD2");
+                    .WithMany(p => p.Calificacions)
+                    .HasForeignKey(d => d.EstudianteId)
+                    .HasConstraintName("FK__Calificac__Estud__5165187F");
             });
 
             modelBuilder.Entity<Estudiante>(entity =>
             {
                 entity.ToTable("Estudiante");
-
-                entity.HasIndex(e => e.Matricula, "UQ__Estudian__0FB9FB4F0FD9AF42")
-                    .IsUnique();
-
-                entity.HasIndex(e => e.Telefono, "UQ__Estudian__4EC504800FF810F0")
-                    .IsUnique();
-
-                entity.HasIndex(e => e.Correo, "UQ__Estudian__60695A192FB6CC4C")
-                    .IsUnique();
-
-                entity.HasIndex(e => e.Cedula, "UQ__Estudian__B4ADFE3860E23756")
-                    .IsUnique();
 
                 entity.Property(e => e.Apellido)
                     .HasMaxLength(40)
