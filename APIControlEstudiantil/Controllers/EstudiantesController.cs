@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using APIControlEstudiantil.Models;
+using APIControlEstudiantil.Models.DTO;
 
 namespace APIControlEstudiantil.Controllers
 {
@@ -39,6 +40,111 @@ namespace APIControlEstudiantil.Controllers
             }
 
             return estudiante;
+        }
+
+        // GET: api/Estudiantes/asistencias
+        [HttpGet("asistencias")]
+        public async Task<ActionResult<List<RelacionEstudianteAsistencia>>> GetEstudianteAsistencias()
+        {
+            try
+            {
+                List<RelacionEstudianteAsistencia> relacion = new List<RelacionEstudianteAsistencia>();
+                List<Estudiante> estudiante = new List<Estudiante>();
+                List<Asistencium> asistencium = new List<Asistencium>();
+
+                estudiante = await _context.Estudiantes.ToListAsync();
+                asistencium = await _context.Asistencia.ToListAsync();
+
+                for (int i = 0; i < estudiante.Count; i++)
+                {
+                    var relacionFiltro = new RelacionEstudianteAsistencia
+                    {
+                        Id = estudiante[i].Id,
+                        Cedula = estudiante[i].Cedula,
+                        Nombre = estudiante[i].Nombre,
+                        Apellido = estudiante[i].Apellido,
+                        Matricula = estudiante[i].Matricula,
+                        Correo = estudiante[i].Correo,
+                        Telefono = estudiante[i].Telefono,
+                    };
+                    List<AsistenciaDTO> asistenciaDTOs = new List<AsistenciaDTO>();
+                    for (int j = 0; j < asistencium.Count; j++)
+                    {
+                        if (asistencium[j].EstudianteId == relacionFiltro.Id)
+                        {
+                            var relacionAsistencia = new AsistenciaDTO
+                            {
+                                Id = asistencium[j].Id,
+                                Fecha = asistencium[j].Fecha,
+                                Estado = asistencium[j].Estado,
+                            };
+                            asistenciaDTOs.Add(relacionAsistencia);
+                        };
+                    }
+                    relacionFiltro.asistenciaDTO = asistenciaDTOs;
+                    relacion.Add(relacionFiltro);
+                }
+
+                return Ok(relacion);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        // GET: api/Estudiantes/calificaciones
+        [HttpGet("calificaciones")]
+        public async Task<ActionResult<List<RelacionEstudianteCalificacion>>> GetEstudianteCalificaciones()
+        {
+            try
+            {
+                List<RelacionEstudianteCalificacion> relacion = new List<RelacionEstudianteCalificacion>();
+                List<Estudiante> estudiante = new List<Estudiante>();
+                List<Calificacion> calificacion = new List<Calificacion>();
+
+                estudiante = await _context.Estudiantes.ToListAsync();
+                calificacion = await _context.Calificacions.ToListAsync();
+
+                for (int i = 0; i < estudiante.Count; i++)
+                {
+                    var relacionFiltro = new RelacionEstudianteCalificacion
+                    {
+                        Id = estudiante[i].Id,
+                        Cedula = estudiante[i].Cedula,
+                        Nombre = estudiante[i].Nombre,
+                        Apellido = estudiante[i].Apellido,
+                        Matricula = estudiante[i].Matricula,
+                        Correo = estudiante[i].Correo,
+                        Telefono = estudiante[i].Telefono,
+                    };
+                    List<CalificacionDTO> calificacionDTOs = new List<CalificacionDTO>();
+                    for (int j = 0; j < calificacion.Count; j++)
+                    {
+                        if (calificacion[j].EstudianteId == relacionFiltro.Id)
+                        {
+                            var relacionCalificacion = new CalificacionDTO
+                            {
+                                Id = calificacion[j].Id,
+                                LenguaEspanola = calificacion[j].LenguaEspanola,
+                                Matematicas = calificacion[j].Matematicas,
+                                CienciasNaturales = calificacion[j].CienciasNaturales,
+                                CienciasSociales = calificacion[j].CienciasSociales,
+                            };
+                            calificacionDTOs.Add(relacionCalificacion);
+                        };
+                    }
+                    relacionFiltro.calificacionDTO = calificacionDTOs;
+                    relacion.Add(relacionFiltro);
+                }
+
+                return Ok(relacion);
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
         }
 
         // PUT: api/Estudiantes/5
