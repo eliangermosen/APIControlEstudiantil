@@ -1,6 +1,6 @@
 # APIControlEstudiantil
 
-Esta API fue creada y desarrollada en la tecnología de .NET CORE 6.0 con EntityFramework 6.0.10, la cual vinculé a una base de datos SQL SERVER. El script de la Base de datos ya lo he cargado al repositorio.
+Esta es el API de un proyecto Full Stack que fue creada y desarrollada en la tecnología de **.NET CORE 6.0** con **EntityFramework 6.0.10**, la cual vinculé a una base de datos **SQL SERVER**. El script de la Base de datos ya lo he cargado al repositorio.
 
 ## Planteamiento del problema
 
